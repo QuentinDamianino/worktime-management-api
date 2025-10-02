@@ -30,7 +30,7 @@ class Employee
     /**
      * @var Collection<int, WorkTime>
      */
-    #[ORM\OneToMany(targetEntity: WorkTime::class, mappedBy: 'employee', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: WorkTime::class, mappedBy: 'employee', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $workTimes;
 
     public function __construct()
