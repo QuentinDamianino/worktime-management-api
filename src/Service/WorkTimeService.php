@@ -26,6 +26,7 @@ class WorkTimeService
         }
 
         $workTime->setEmployee($employee);
+        $workTime->setStartDate($dto->startDateTime);
         $this->objectMapper->map($dto, $workTime);
 
         $this->workTimeRepository->save($workTime);

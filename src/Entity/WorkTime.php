@@ -28,6 +28,9 @@ class WorkTime
     #[Assert\NotBlank(message: 'End datetime is required')]
     private ?\DateTimeImmutable $endDateTime = null;
 
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    private ?\DateTimeImmutable $startDate = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -65,6 +68,18 @@ class WorkTime
     public function setEndDateTime(\DateTimeImmutable $endDateTime): static
     {
         $this->endDateTime = $endDateTime;
+
+        return $this;
+    }
+
+    public function getStartDate(): ?\DateTimeImmutable
+    {
+        return $this->startDate;
+    }
+
+    public function setStartDate(\DateTimeImmutable $startDate): static
+    {
+        $this->startDate = $startDate;
 
         return $this;
     }
