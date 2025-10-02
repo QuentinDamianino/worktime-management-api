@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EmployeeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
@@ -25,9 +27,16 @@ class Employee
     #[Assert\Length(max: 100, maxMessage: 'Last name cannot be longer than 100 characters')]
     private ?string $lastName = null;
 
+    /**
+     * @var Collection<int, WorkTime>
+     */
+    #[ORM\OneToMany(targetEntity: WorkTime::class, mappedBy: 'employee', orphanRemoval: true)]
+    private Collection $workTimes;
+
     public function __construct()
     {
         $this->id = Uuid::v4();
+        $this->workTimes = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -62,6 +71,36 @@ class Employee
     public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, WorkTime>
+     */
+    public function getWorkTimes(): Collection
+    {
+        return $this->workTimes;
+    }
+
+    public function addWorkTime(WorkTime $workTime): static
+    {
+        if (!$this->workTimes->contains($workTime)) {
+            $this->workTimes->add($workTime);
+            $workTime->setEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorkTime(WorkTime $workTime): static
+    {
+        if ($this->workTimes->removeElement($workTime)) {
+            // set the owning side to null (unless already changed)
+            if ($workTime->getEmployee() === $this) {
+                $workTime->setEmployee(null);
+            }
+        }
 
         return $this;
     }
