@@ -15,16 +15,16 @@ class WorkTime
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Employee::class, inversedBy: 'workTimes')]
+    #[ORM\ManyToOne(targetEntity: Employee::class, cascade: ['persist', 'remove'], inversedBy: 'workTimes')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Assert\NotBlank(message: 'Employee is required')]
     private ?Employee $employee = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Assert\NotBlank(message: 'Start datetime is required')]
     private ?\DateTimeImmutable $startDateTime = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Assert\NotBlank(message: 'End datetime is required')]
     private ?\DateTimeImmutable $endDateTime = null;
 
